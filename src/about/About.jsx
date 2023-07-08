@@ -1,64 +1,63 @@
-import React, { useState } from "react";
-import "./about.css";
+import React, { useState } from "react"
+import "./about.css"
 
-function About({}) {
-  const [tabs, setTabs] = useState([]);
-  const [activeTab, setActiveTab] = useState(0);
-  const [theme, setTheme] = useState("light");
+function About() {
+  const [tabs, setTabs] = useState([])
+  const [activeTab, setActiveTab] = useState(new Date())
+  const [theme, setTheme] = useState("light")
 
   function addTab() {
+    const id = Date.now()
     const newTab = {
-      id: Date.now(),
+      id: id,
       content: `Tab ${tabs.length + 1}`,
-      isActive: false,
-    };
+    }
 
-    setTabs([...tabs, newTab]);
-    setActiveTab(tabs.length);
+    setTabs([...tabs, newTab])
+    setActiveTab(id)
+    // console.log(tabs.length)
   }
 
-  function handleTabClick(index) {
-    setActiveTab(index);
-  }
 
-  
+
+
   function toggleTheme() {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme(theme === "light" ? "dark" : "light")
   }
 
-  
+
   return (
     <div className={`tab-container ${theme}`}>
       <div className="tab-buttons">
-        {tabs.map((tab, index) => (
+        {tabs.map(({ id, content }, index) => (
           <div
-            key={tab.id}
+            key={id}
             className={`tab-button ${activeTab === index ? "active" : ""}`}
-            onClick={() => handleTabClick(index, tab.id)}
+            onClick={() => setActiveTab(id)}
           >
-            {tab.content}
+            {content}
           </div>
         ))}
         <button className="add-button" onClick={addTab}>
           +
         </button>
       </div>
-            <button className="theme-button" onClick={toggleTheme}>Theme</button>
+      <button className="theme-button" onClick={toggleTheme}>Theme</button>
+
       <div className="tab-content">
-        {tabs.map((tab, index) => (
+        {tabs.map(({ content, id }, index) => (
+          id === activeTab &&
           <div
-            key={tab.id}
-            className={`tab-container ${
-              activeTab === index ? "active-content" : "inactive-content"
-            }`}
+            key={id}
+            className='tab-container'
           >
-            {/* Render the content for each tab */}
-           <h1 > {`Tab ${index + 1}`}</h1>
+
+            <h1 >  {content}</h1>
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default About;
+export default About
